@@ -14,6 +14,7 @@ namespace SensusPlaylist
             _serviceProvider = new ServiceCollection()
                 .AddLogging()
                 .AddSingleton<IFileSystem, FileSystem>()
+                .AddSingleton<IPlaylistReader, PlaylistReader>()
                 .AddSingleton<IPlaylistExporter, PlaylistExporter>()
                 .BuildServiceProvider();
 
