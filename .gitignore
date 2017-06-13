@@ -269,5 +269,6 @@ __pycache__/
 
 # Code coverage
 Coverage/
+Coverage-Inline/
 **/Coverage.xml
 **/Cobertura-Coverage.xml
