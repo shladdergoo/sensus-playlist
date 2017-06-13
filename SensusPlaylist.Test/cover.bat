@@ -20,8 +20,6 @@ REM Generate the Cobertura Report
 REM Generate the HTML report
 
 %reportgenerator% -targetdir:%coveragedir% -reporttypes:Html;HtmlChart;Badges -reports:%coveragefile% -verbosity:Error
-REM DEL %coveragedir%\index.html
-REM REN %coveragedir%\index.htm index.html
 
 REM Open the report  
-REM start "report" "%coveragedir%\index.html"
+REM start "report" "%coveragedir%\index.htm"
