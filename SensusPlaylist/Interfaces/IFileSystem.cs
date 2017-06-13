@@ -11,7 +11,8 @@ namespace SensusPlaylist
         bool DirectoryOpen(string path);
         void CreateDirectory(string path);
         void CleanDirectory(string path);
-        string GetParentDirectory(string path);
+        string GetDirectory(string path);
+        string GetRelativePath(string path, string rootPath);
         string GetShortName(string path);
     }
 }

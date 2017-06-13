@@ -51,13 +51,23 @@ namespace SensusPlaylist
             }
         }
 
-        public string GetParentDirectory(string path)
+        public string GetDirectory(string path)
         {
-            if (File.Exists(path)) return new FileInfo(path).Directory.FullName;
+            if(Directory.Exists(path)) return path;
 
-            if (Directory.Exists(path)) return new DirectoryInfo(path).Parent.FullName;
+            if(File.Exists(path)) return new FileInfo(path).DirectoryName;
 
             throw new FileNotFoundException();
+        }
+
+        public string GetRelativePath(string path, string rootPath)
+        {
+            Uri target = new Uri(path);
+            Uri root = new Uri(rootPath);
+
+            Uri relativeUri = target.MakeRelativeUri(root);
+
+            return relativeUri.ToString().Replace('/', '\\');
         }
 
         public string GetShortName(string path)

@@ -14,6 +14,10 @@ namespace SensusPlaylist
                 "filename",
                 "Enter the name and path of the iTunes playlist file");
 
+            CommandArgument outputDirectory = command.Argument(
+                "outputDirectory",
+                "Enter the path of the output directory");
+
             command.HelpOption(HelpOptionTemplate);
 
             command.OnExecute(() =>
@@ -21,7 +25,7 @@ namespace SensusPlaylist
                 if (filename.Value != null)
                 {
                     ServiceProvider.GetService<IPlaylistExporter>().Export(filename.Value, 
-                        Configuration.Config.LibraryRoot);
+                        outputDirectory.Value, Configuration.Config.LibraryRoot);
                 }
                 else
                 {

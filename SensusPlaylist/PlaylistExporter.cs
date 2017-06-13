@@ -20,7 +20,7 @@ namespace SensusPlaylist
             _playlistReader = playlistReader;
         }
 
-        public void Export(string filename, string outputDirectory)
+        public void Export(string filename, string outputDirectory, string libraryRoot)
         {
             _logger.LogDebug("[Export] Start");
 
@@ -34,7 +34,7 @@ namespace SensusPlaylist
 
             Playlist playlist = _playlistReader.ReadAll(playlistFile);
 
-            CopyPlaylistFiles(playlist, outputDirectory);
+            CopyPlaylistFiles(playlist, outputDirectory, libraryRoot);
 
             _logger.LogDebug("[Export] End");
         }
@@ -51,21 +51,21 @@ namespace SensusPlaylist
             }
         }
 
-        private void CopyPlaylistFiles(Playlist playlist, string outputDirectory)
+        private void CopyPlaylistFiles(Playlist playlist, string outputDirectory, string libraryRoot)
         {
             foreach (string filename in playlist.Files)
             {
-                CopyFileWithParentDirectory(filename, outputDirectory);
+                CopyFileWithParentsRelativeToRoot(filename, outputDirectory, libraryRoot);
             }
         }
 
-        private void CopyFileWithParentDirectory(string filename, string outputDirectory)
+        private void CopyFileWithParentsRelativeToRoot(string filename, string outputDirectory, string libraryRoot)
         {
-            string fileParentDirectory = _fileSystem.GetParentDirectory(filename);
-            string fileParentShortName = _fileSystem.GetShortName(fileParentDirectory);
+            string filenameRelativeToRoot = _fileSystem.GetRelativePath(filename, libraryRoot);
+            string realtiveFilenameDirectory = _fileSystem.GetDirectory(filenameRelativeToRoot);
             string fileShortName = _fileSystem.GetShortName(filename);
 
-            string targetDirectory = Path.Combine(outputDirectory, fileParentShortName);
+            string targetDirectory = Path.Combine(outputDirectory, realtiveFilenameDirectory);
 
             if (!_fileSystem.DirectoryExists(targetDirectory))
             {
