@@ -31,7 +31,6 @@ namespace SensusPlaylist.Test
         [Fact]
         public void Export_FileFound_ReadsFile()
         {
-            ;
             _fileSystem.FileExists(Arg.Any<string>()).Returns(true);
 
             _playlistReader.ReadAll(Arg.Any<Stream>()).Returns(new Playlist());
