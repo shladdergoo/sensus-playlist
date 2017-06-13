@@ -17,9 +17,11 @@ REM Run code coverage analysis
 REM Generate the Cobertura Report
 %opencoverConverter% -input:%coveragefile% -output:%coberturaCoverageFile% -sources:..
 
-REM Generate the HTML report  
-%reportgenerator% -targetdir:%coveragedir% -reporttypes:Html;Badges -reports:%coveragefile% -verbosity:Error
-REN %coveragefile%\index.htm index.html
+REM Generate the HTML report
+
+%reportgenerator% -targetdir:%coveragedir% -reporttypes:Html;HtmlChart;Badges -reports:%coveragefile% -verbosity:Error
+DEL %coveragedir%\index.html
+REN %coveragedir%\index.htm index.html
 
 REM Open the report  
-REM start "report" "%coveragedir%\index.htm"
+REM start "report" "%coveragedir%\index.html"
