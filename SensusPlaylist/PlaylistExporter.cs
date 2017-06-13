@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Logging;
 
 using System;
+using System.Linq;
 using System.IO;
 
 namespace SensusPlaylist
@@ -33,9 +34,15 @@ namespace SensusPlaylist
             InitializeOutputDirectory(outputDirectory);
 
             Playlist playlist = _playlistReader.ReadAll(playlistFile);
-
-            CopyPlaylistFiles(playlist, outputDirectory, libraryRoot);
-
+            if (playlist == null || !playlist.Files.Any())
+            {
+                _logger.LogDebug("[Export] No files");
+            }
+            else
+            {
+                CopyPlaylistFiles(playlist, outputDirectory, libraryRoot);
+            }
+            
             _logger.LogDebug("[Export] End");
         }
 

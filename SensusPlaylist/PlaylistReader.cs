@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 
 namespace SensusPlaylist
@@ -6,7 +7,7 @@ namespace SensusPlaylist
     {
         public Playlist ReadAll(Stream playlist)
         {
-            return null;
+            return new Playlist();
         }
     }
 }
