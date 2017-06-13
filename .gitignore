@@ -270,3 +270,4 @@ __pycache__/
 # Code coverage
 Coverage/
 **/Coverage.xml
+**/Cobertura-Coverage.xml
