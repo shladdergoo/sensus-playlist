@@ -15,6 +15,6 @@ namespace SensusPlaylist
             Files = new List<string>(files);
         }
 
-        public IEnumerable<string> Files { get; private set; }
+        public IList<string> Files { get; private set; }
     }
 }
