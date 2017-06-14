@@ -5,6 +5,11 @@
         "**/.git": true,
         "**/bin": true,
         "**/obj": true,
-        "**/*.lock.json": true
+        "**/*.lock.json": true,
+        "**/node_modules": true,
+        "**/Coverage": true,
+        "**/Coverage-Inline": true,
+        "**/Coverage.xml": true,
+        "**/Cobertura-Coverage.xml": true
     }
 }
