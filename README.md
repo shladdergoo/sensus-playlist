@@ -1,6 +1,6 @@
-# Project Name
+# sesnus-playlist
 
-TODO: Write a project description
+Playlist and media file management for the Volvo Sensus Touch media platform
 
 ## Installation
 
