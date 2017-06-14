@@ -28,13 +28,11 @@ namespace SensusPlaylist
             if (filename == null) throw new ArgumentNullException(nameof(filename));
             if (outputDirectory == null) throw new ArgumentNullException(nameof(outputDirectory));
             if (libraryRoot == null) throw new ArgumentNullException(nameof(libraryRoot));
-
-            Stream playlistFile = null;
             if (!_fileSystem.FileExists(filename)) throw new FileNotFoundException(filename);
 
             InitializeOutputDirectory(outputDirectory);
 
-            Playlist playlist = _playlistReader.ReadAll(playlistFile);
+            Playlist playlist = _playlistReader.ReadAll(_fileSystem.FileOpen(filename));
             if (playlist == null || !playlist.Files.Any())
             {
                 _logger.LogDebug("[Export] No files");
