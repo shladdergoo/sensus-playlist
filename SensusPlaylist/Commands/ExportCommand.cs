@@ -22,7 +22,7 @@ namespace SensusPlaylist
 
             command.OnExecute(() =>
             {
-                if (filename.Value != null)
+                if (filename.Value != null && outputDirectory != null)
                 {
                     ServiceProvider.GetService<IPlaylistExporter>().Export(filename.Value, 
                         outputDirectory.Value, Configuration.Config.LibraryRoot);
