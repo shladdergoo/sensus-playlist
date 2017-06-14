@@ -117,6 +117,25 @@ namespace SensusPlaylist.Test
         }
 
         [Fact]
+        public void Export_OutputDirectoryDoesntExist_CreatesOutputDirectory()
+        {
+            const int PlaylistTracks = 5;
+
+            _fileSystem.FileExists(Arg.Any<string>()).Returns(true);
+            _fileSystem.DirectoryExists(Arg.Is<string>("someOutputDir")).Returns(false);
+            _fileSystem.GetRelativePath(Arg.Any<string>(), Arg.Any<string>()).Returns("someFile");
+            _fileSystem.GetShortName(Arg.Is<string>("C:\\someParent\\someFile")).Returns("someFile");
+
+            _playlistReader.ReadAll(Arg.Any<Stream>()).Returns(GetTestPlaylist(PlaylistTracks));
+
+            IPlaylistExporter sut = new PlaylistExporter(_fileSystem, _playlistReader);
+
+            sut.Export("C:\\someParent\\someFile", "someOutputDir", "C:\\someParent");
+
+            _fileSystem.Received().CreateDirectory(Arg.Any<string>());
+        }
+
+        [Fact]
         public void Export_PlaylistRead_AllFilesProcessed()
         {
             const int PlaylistTracks = 5;
