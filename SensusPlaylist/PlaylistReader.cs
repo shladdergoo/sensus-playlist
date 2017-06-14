@@ -7,6 +7,8 @@ namespace SensusPlaylist
     {
         public Playlist ReadAll(Stream playlist)
         {
+            if(playlist == null) throw new ArgumentNullException(nameof(playlist));
+
             return new Playlist();
         }
     }
