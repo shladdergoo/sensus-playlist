@@ -19,6 +19,48 @@ namespace SensusPlaylist.Test
         }
 
         [Fact]
+        public void Ctor_FilesystemNull_ThrowsException()
+        {
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                IPlaylistExporter sut = new PlaylistExporter(null, _playlistReader);
+            });
+        }
+
+        [Fact]
+        public void Ctor_PlaylistReaderNull_ThrowsException()
+        {
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                IPlaylistExporter sut = new PlaylistExporter(_fileSystem, null);
+            });
+        }
+
+        [Fact]
+        public void Export_FilenameNull_ThrowsException()
+        {
+            IPlaylistExporter sut = new PlaylistExporter(_fileSystem, _playlistReader);
+
+            Assert.Throws<ArgumentNullException>(() => sut.Export(null, "someOutputDir", "somelibraryRoot"));
+        }
+
+        [Fact]
+        public void Export_OutputDirNull_ThrowsException()
+        {
+            IPlaylistExporter sut = new PlaylistExporter(_fileSystem, _playlistReader);
+
+            Assert.Throws<ArgumentNullException>(() => sut.Export("someFile", null, "somelibraryRoot"));
+        }
+
+        [Fact]
+        public void Export_LibraryRootNull_ThrowsException()
+        {
+            IPlaylistExporter sut = new PlaylistExporter(_fileSystem, _playlistReader);
+
+            Assert.Throws<ArgumentNullException>(() => sut.Export("someFile", "someOutputDir", null));
+        }
+
+        [Fact]
         public void Export_FileNotFound_ThrowsException()
         {
             _fileSystem.FileExists(Arg.Any<string>()).Returns(false);
@@ -91,7 +133,7 @@ namespace SensusPlaylist.Test
 
             sut.Export("C:\\someParent\\someFile", "someOutputDir", "C:\\someParent");
 
-            _fileSystem.Received(PlaylistTracks).FileCopy(Arg.Is<string>("C:\\someParent\\someFile"), 
+            _fileSystem.Received(PlaylistTracks).FileCopy(Arg.Is<string>("C:\\someParent\\someFile"),
                 Arg.Is<string>("someOutputDir\\someFile"), Arg.Any<bool>());
         }
 
