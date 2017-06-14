@@ -1,4 +1,4 @@
-# sesnus-playlist
+# sensus-playlist
 
 Playlist and media file management for the Volvo Sensus Touch media platform
 
