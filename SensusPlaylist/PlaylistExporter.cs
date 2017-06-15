@@ -23,6 +23,11 @@ namespace SensusPlaylist
 
         public void Export(string filename, string outputDirectory, string libraryRoot)
         {
+            Export(filename, outputDirectory, libraryRoot, false);
+        }
+
+        public void Export(string filename, string outputDirectory, string libraryRoot, bool exportPlaylistFile)
+        {
             _logger.LogDebug("[Export] Start");
 
             if (filename == null) throw new ArgumentNullException(nameof(filename));
