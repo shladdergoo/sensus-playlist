@@ -2,6 +2,7 @@ using Xunit;
 using NSubstitute;
 
 using System;
+using System.IO;
 
 namespace SensusPlaylist.Test
 {
@@ -43,6 +44,22 @@ namespace SensusPlaylist.Test
             {
                 sut.FormatPlaylistFile("someFile", null);
             });
+        }
+
+        [Fact] void FormatPlaylistFile_GetsFile_CorrectlyFormats()
+        {
+            _fileSystem.GetRelativePath(Arg.Is<string>("C:\\Users\\jfox\\Music\\iTunes\\iTunes Media\\Music\\Jamie T\\Trick\\01 Tinfoil Boy.m4a"), 
+                Arg.Is<string>("C:\\Users\\jfox\\Music\\iTunes\\iTunes Media\\Music"))
+                .Returns("Jamie T\\Trick\\01 Tinfoil Boy.m4a");
+
+            IPlaylistFormatter sut = new SensusPlaylistFormatter(_fileSystem);
+
+            string result = sut.FormatPlaylistFile("C:\\Users\\jfox\\Music\\iTunes\\iTunes Media\\Music\\Jamie T\\Trick\\01 Tinfoil Boy.m4a", 
+                "C:\\Users\\jfox\\Music\\iTunes\\iTunes Media\\Music");
+
+            Uri resultUri = new Uri(result, UriKind.Relative);
+
+            Assert.False(result.StartsWith(Path.DirectorySeparatorChar.ToString()));
         }
     }
 }

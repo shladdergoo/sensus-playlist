@@ -18,7 +18,9 @@ namespace SensusPlaylist
             if (filename == null) throw new ArgumentNullException(nameof(filename));
             if (libraryRoot == null) throw new ArgumentNullException(nameof(libraryRoot));
 
-            throw new NotImplementedException();
+            string relativeFilename = _fileSystem.GetRelativePath(filename, libraryRoot);
+
+            return relativeFilename;
         }
     }
 }
