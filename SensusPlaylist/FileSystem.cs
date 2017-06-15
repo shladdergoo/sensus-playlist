@@ -66,12 +66,21 @@ namespace SensusPlaylist
 
         public string GetRelativePath(string path, string rootPath)
         {
+            if (path == null) throw new ArgumentNullException(nameof(path));
+            if (rootPath == null) throw new ArgumentNullException(nameof(rootPath));
+
+            if (!rootPath.EndsWith(Path.DirectorySeparatorChar.ToString()))
+            {
+                rootPath = string.Concat(rootPath, Path.DirectorySeparatorChar);
+            }
+
             Uri target = new Uri(path);
             Uri root = new Uri(rootPath);
 
-            Uri relativeUri = target.MakeRelativeUri(root);
+            Uri relativeUri = root.MakeRelativeUri(target);
 
-            return relativeUri.ToString().Replace('/', '\\');
+            return Uri.UnescapeDataString(relativeUri.ToString())
+                .Replace('/', Path.DirectorySeparatorChar);
         }
 
         public string GetShortName(string path)
