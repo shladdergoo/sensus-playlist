@@ -18,7 +18,17 @@ namespace SensusPlaylist
         {
             if (playlist == null) throw new ArgumentNullException(nameof(playlist));
 
-            throw new NotImplementedException();
+            if (playlist.Files == null || playlist.Files.Count == 0) return;
+
+            StreamWriter writer = new StreamWriter(_outputStream);
+
+            foreach(string filename in playlist.Files)
+            {
+                writer.WriteLine(filename);
+            }
+
+            writer.Flush();
+            _outputStream.Position = 0;
         }
     }
 }
