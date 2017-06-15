@@ -12,7 +12,11 @@ namespace SensusPlaylist
 
         public Stream FileOpen(string filename)
         {
-            throw new NotImplementedException();
+            if (filename == null) throw new ArgumentNullException(nameof(filename));
+
+            if (!File.Exists(filename)) throw new FileNotFoundException(filename);
+
+            return File.OpenRead(filename);
         }
 
         public void FileCopy(string source, string destination, bool overwrite)
@@ -53,9 +57,9 @@ namespace SensusPlaylist
 
         public string GetDirectory(string path)
         {
-            if(Directory.Exists(path)) return path;
+            if (Directory.Exists(path)) return path;
 
-            if(File.Exists(path)) return new FileInfo(path).DirectoryName;
+            if (File.Exists(path)) return new FileInfo(path).DirectoryName;
 
             throw new FileNotFoundException();
         }
