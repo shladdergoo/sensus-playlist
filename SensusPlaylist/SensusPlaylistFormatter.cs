@@ -13,9 +13,10 @@ namespace SensusPlaylist
             _fileSystem = fileSystem;
         }
 
-        public string FormatPlaylistFile(string filename)
+        public string FormatPlaylistFile(string filename, string libraryRoot)
         {
             if (filename == null) throw new ArgumentNullException(nameof(filename));
+            if (libraryRoot == null) throw new ArgumentNullException(nameof(libraryRoot));
 
             throw new NotImplementedException();
         }
