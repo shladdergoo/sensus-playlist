@@ -55,7 +55,7 @@ namespace SensusPlaylist
             }
         }
 
-        public string GetDirectory(string path)
+        public string GetDirectoriesFromRelativePath(string path)
         {
             if (Directory.Exists(path)) return path;
 
