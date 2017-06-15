@@ -7,6 +7,8 @@ namespace SensusPlaylist
     {
         public bool FileExists(string filename)
         {
+            if (filename == null) throw new ArgumentNullException(nameof(filename));
+
             return File.Exists(filename);
         }
 
@@ -21,26 +23,30 @@ namespace SensusPlaylist
 
         public void FileCopy(string source, string destination, bool overwrite)
         {
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (destination == null) throw new ArgumentNullException(nameof(destination));
+
             File.Copy(source, destination, overwrite);
         }
 
         public bool DirectoryExists(string path)
         {
-            return Directory.Exists(path);
-        }
+            if (path == null) throw new ArgumentNullException(nameof(path));
 
-        public bool DirectoryOpen(string path)
-        {
-            throw new NotImplementedException();
+            return Directory.Exists(path);
         }
 
         public void CreateDirectory(string path)
         {
+            if (path == null) throw new ArgumentNullException(nameof(path));
+
             Directory.CreateDirectory(path);
         }
 
         public void CleanDirectory(string path)
         {
+            if (path == null) throw new ArgumentNullException(nameof(path));
+
             if (!Directory.Exists(path)) throw new FileNotFoundException();
 
             DirectoryInfo directory = new DirectoryInfo(path);
@@ -55,7 +61,7 @@ namespace SensusPlaylist
             }
         }
 
-        public string GetDirectoriesFromRelativePath(string path)
+        public string GetDirectory(string path)
         {
             if (Directory.Exists(path)) return path;
 

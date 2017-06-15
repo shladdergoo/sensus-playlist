@@ -68,10 +68,11 @@ namespace SensusPlaylist
         private void CopyFileWithParentsRelativeToRoot(string filename, string outputDirectory, string libraryRoot)
         {
             string filenameRelativeToRoot = _fileSystem.GetRelativePath(filename, libraryRoot);
-            string realtiveFilenameDirectories = _fileSystem.GetDirectoriesFromRelativePath(filenameRelativeToRoot);
+            string fileDirectory = _fileSystem.GetDirectory(filename);
+            string relativeDirectories = _fileSystem.GetRelativePath(fileDirectory, libraryRoot);
             string fileShortName = _fileSystem.GetShortName(filename);
 
-            string targetDirectory = Path.Combine(outputDirectory, realtiveFilenameDirectories);
+            string targetDirectory = Path.Combine(outputDirectory, relativeDirectories);
 
             if (!_fileSystem.DirectoryExists(targetDirectory))
             {

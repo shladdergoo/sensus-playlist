@@ -13,5 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SensusPlaylist\SensusPlaylist.csproj" />
+
+    <None Include=".\TestData\Laptop.m3u" CopyToOutputDirectory="Always" />
   </ItemGroup>
 </Project>
