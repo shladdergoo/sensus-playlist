@@ -142,7 +142,11 @@ namespace SensusPlaylist.Test
 
             _fileSystem.FileExists(Arg.Any<string>()).Returns(true);
             _fileSystem.DirectoryExists(Arg.Is<string>("someOutputDir")).Returns(true);
-            _fileSystem.GetRelativePath(Arg.Any<string>(), Arg.Any<string>()).Returns("someFile");
+            _fileSystem.GetRelativePath(Arg.Is<string>("C:\\someParent\\someFile"), 
+                Arg.Is<string>("C:\\someParent")).Returns("someFile");
+            _fileSystem.GetRelativePath(Arg.Is<string>("C:\\someParent"), 
+                Arg.Is<string>("C:\\someParent")).Returns("");
+            _fileSystem.GetDirectory(Arg.Is<string>("C:\\someParent\\someFile")).Returns("C:\\someParent");
             _fileSystem.GetShortName(Arg.Is<string>("C:\\someParent\\someFile")).Returns("someFile");
 
             _playlistReader.ReadAll(Arg.Any<Stream>()).Returns(GetTestPlaylist(PlaylistTracks));
