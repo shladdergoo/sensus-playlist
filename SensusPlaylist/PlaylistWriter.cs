@@ -6,12 +6,15 @@ namespace SensusPlaylist
     public class PlaylistWriter : IPlaylistWriter
     {
         private Stream _outputStream;
+        private IPlaylistFormatter _formatter;
 
-        public PlaylistWriter(Stream outputStream)
+        public PlaylistWriter(Stream outputStream, IPlaylistFormatter formatter)
         {
             if (outputStream == null) throw new ArgumentNullException(nameof(outputStream));
-
+            if (formatter == null) throw new ArgumentNullException(nameof(formatter));
+            
             _outputStream = outputStream;
+            _formatter = formatter;
         }
 
         public void WriteAll(Playlist playlist)
@@ -24,7 +27,7 @@ namespace SensusPlaylist
 
             foreach(string filename in playlist.Files)
             {
-                writer.WriteLine(filename);
+                writer.WriteLine(_formatter.FormatPlaylistFile(filename));
             }
 
             writer.Flush();

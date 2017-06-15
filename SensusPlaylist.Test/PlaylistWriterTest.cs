@@ -1,4 +1,5 @@
 using Xunit;
+using NSubstitute;
 
 using System;
 using System.IO;
@@ -8,10 +9,18 @@ namespace SensusPlaylist.Test
 {
     public class PlaylistWriterTest
     {
+        IPlaylistFormatter _formatter;
+
+        public PlaylistWriterTest()
+        {
+            _formatter = Substitute.For<IPlaylistFormatter>();
+        }
+
         [Fact]
         public void WriteAll_PlaylistNull_ThrowsException()
         {
-            PlaylistWriter sut = new PlaylistWriter(new MemoryStream());
+            PlaylistWriter sut = new PlaylistWriter(new MemoryStream(),
+                _formatter);
 
             Assert.Throws<ArgumentNullException>(() => sut.WriteAll(null));
         }
@@ -21,7 +30,7 @@ namespace SensusPlaylist.Test
         {
             Stream output = new MemoryStream();
 
-            PlaylistWriter sut = new PlaylistWriter(output);
+            PlaylistWriter sut = new PlaylistWriter(output, _formatter);
 
             sut.WriteAll(GetTestPlaylist(0));
 
@@ -35,7 +44,7 @@ namespace SensusPlaylist.Test
 
             Stream output = new MemoryStream();
 
-            PlaylistWriter sut = new PlaylistWriter(output);
+            PlaylistWriter sut = new PlaylistWriter(output, _formatter);
 
             sut.WriteAll(GetTestPlaylist(FileCount));
 

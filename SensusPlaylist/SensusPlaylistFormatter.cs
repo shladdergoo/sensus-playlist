@@ -5,20 +5,22 @@ namespace SensusPlaylist
     public class SensusPlaylistFormatter : IPlaylistFormatter
     {
         private IFileSystem _fileSystem;
+        private string _libraryRoot;
 
-        public SensusPlaylistFormatter(IFileSystem fileSystem)
+        public SensusPlaylistFormatter(IFileSystem fileSystem, string libraryRoot)
         {
             if (fileSystem == null) throw new ArgumentNullException(nameof(fileSystem));
-
-            _fileSystem = fileSystem;
-        }
-
-        public string FormatPlaylistFile(string filename, string libraryRoot)
-        {
-            if (filename == null) throw new ArgumentNullException(nameof(filename));
             if (libraryRoot == null) throw new ArgumentNullException(nameof(libraryRoot));
 
-            string relativeFilename = _fileSystem.GetRelativePath(filename, libraryRoot);
+            _fileSystem = fileSystem;
+            _libraryRoot = libraryRoot;
+        }
+
+        public string FormatPlaylistFile(string filename)
+        {
+            if (filename == null) throw new ArgumentNullException(nameof(filename));
+
+            string relativeFilename = _fileSystem.GetRelativePath(filename, _libraryRoot);
 
             return relativeFilename;
         }

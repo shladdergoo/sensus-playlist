@@ -20,29 +20,30 @@ namespace SensusPlaylist.Test
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                SensusPlaylistFormatter sut = new SensusPlaylistFormatter(null);
+                SensusPlaylistFormatter sut = new SensusPlaylistFormatter(null, 
+                    "someLibraryRoot");
+            });
+        }
+
+        [Fact]
+        public void Ctor_LibraryRootNull_ThrowsException()
+        {
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                SensusPlaylistFormatter sut = new SensusPlaylistFormatter(_fileSystem, 
+                    null);
             });
         }
 
         [Fact]
         public void FormatPlaylistFile_FilenameNull_ThrowsException()
         {
-            IPlaylistFormatter sut = new SensusPlaylistFormatter(_fileSystem);
+            IPlaylistFormatter sut = new SensusPlaylistFormatter(_fileSystem,
+                "someLibraryRoot");
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                sut.FormatPlaylistFile(null, "someLibraryRoot");
-            });
-        }
-
-        [Fact]
-        public void FormatPlaylistFile_LibraryRootNull_ThrowsException()
-        {
-            IPlaylistFormatter sut = new SensusPlaylistFormatter(_fileSystem);
-
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                sut.FormatPlaylistFile("someFile", null);
+                sut.FormatPlaylistFile(null);
             });
         }
 
@@ -53,10 +54,10 @@ namespace SensusPlaylist.Test
                 Arg.Is<string>("C:\\Users\\jfox\\Music\\iTunes\\iTunes Media\\Music"))
                 .Returns("Jamie T\\Trick\\01 Tinfoil Boy.m4a");
 
-            IPlaylistFormatter sut = new SensusPlaylistFormatter(_fileSystem);
-
-            string result = sut.FormatPlaylistFile("C:\\Users\\jfox\\Music\\iTunes\\iTunes Media\\Music\\Jamie T\\Trick\\01 Tinfoil Boy.m4a",
+            IPlaylistFormatter sut = new SensusPlaylistFormatter(_fileSystem,
                 "C:\\Users\\jfox\\Music\\iTunes\\iTunes Media\\Music");
+
+            string result = sut.FormatPlaylistFile("C:\\Users\\jfox\\Music\\iTunes\\iTunes Media\\Music\\Jamie T\\Trick\\01 Tinfoil Boy.m4a");
 
             Uri resultUri = new Uri(result, UriKind.Relative);
 

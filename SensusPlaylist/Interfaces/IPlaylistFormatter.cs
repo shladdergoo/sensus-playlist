@@ -2,6 +2,6 @@ namespace SensusPlaylist
 {
     public interface IPlaylistFormatter
     {
-         string FormatPlaylistFile(string filename, string libraryRoot);
+         string FormatPlaylistFile(string filename);
     }
 }
