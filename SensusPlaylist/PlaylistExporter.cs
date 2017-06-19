@@ -26,7 +26,8 @@ namespace SensusPlaylist
             Export(filename, outputDirectory, libraryRoot, false);
         }
 
-        public void Export(string filename, string outputDirectory, string libraryRoot, bool exportPlaylistFile)
+        public void Export(string filename, string outputDirectory, string libraryRoot, 
+            bool exportPlaylistFile)
         {
             _logger.LogDebug("[Export] Start");
 
@@ -37,15 +38,7 @@ namespace SensusPlaylist
 
             InitializeOutputDirectory(outputDirectory);
 
-            Playlist playlist = _playlistReader.ReadAll(_fileSystem.FileOpen(filename));
-            if (playlist == null || !playlist.Files.Any())
-            {
-                _logger.LogDebug("[Export] No files");
-            }
-            else
-            {
-                CopyPlaylistFiles(playlist, outputDirectory, libraryRoot);
-            }
+            ProcessPlaylist(filename, outputDirectory, libraryRoot);
             
             _logger.LogDebug("[Export] End");
         }
@@ -59,6 +52,20 @@ namespace SensusPlaylist
             else
             {
                 _fileSystem.CleanDirectory(outputDirectory);
+            }
+        }
+
+        private void ProcessPlaylist(string filename, string outputDirectory, 
+            string libraryRoot)
+        {
+            Playlist playlist = _playlistReader.ReadAll(_fileSystem.FileOpen(filename));
+            if (playlist == null || !playlist.Files.Any())
+            {
+                _logger.LogDebug("[Export] No files");
+            }
+            else
+            {
+                CopyPlaylistFiles(playlist, outputDirectory, libraryRoot);
             }
         }
 
