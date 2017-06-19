@@ -17,6 +17,24 @@ namespace SensusPlaylist.Test
         }
 
         [Fact]
+        public void Ctor_OutputStreamNull_ThrowsException()
+        {
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                IPlaylistWriter sut = new PlaylistWriter(null, _formatter);
+            });
+        }
+
+        [Fact]
+        public void Ctor_FormatterNull_ThrowsException()
+        {
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                IPlaylistWriter sut = new PlaylistWriter(new MemoryStream(), null);
+            });
+        }
+
+        [Fact]
         public void WriteAll_PlaylistNull_ThrowsException()
         {
             PlaylistWriter sut = new PlaylistWriter(new MemoryStream(),
@@ -70,7 +88,7 @@ namespace SensusPlaylist.Test
 
             StreamReader reader = new StreamReader(output);
 
-            while(reader.ReadLine() != null)
+            while (reader.ReadLine() != null)
             {
                 count++;
             }
