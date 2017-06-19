@@ -30,7 +30,7 @@ namespace SensusPlaylist
             Export(filename, outputDirectory, libraryRoot, false);
         }
 
-        public void Export(string filename, string outputDirectory, string libraryRoot, 
+        public void Export(string filename, string outputDirectory, string libraryRoot,
             bool exportPlaylistFile)
         {
             _logger.LogDebug("[Export] Start");
@@ -42,10 +42,11 @@ namespace SensusPlaylist
 
             InitializeOutputDirectory(outputDirectory);
 
-            ProcessPlaylist(filename, outputDirectory, libraryRoot);
-
-            if(exportPlaylistFile) ExportPlaylistFile();
-            
+            Playlist playlist;
+            if ((playlist = ProcessPlaylist(filename, outputDirectory, libraryRoot)) != null)
+            {
+                if (exportPlaylistFile) ExportPlaylistFile(playlist);
+            }
             _logger.LogDebug("[Export] End");
         }
 
@@ -61,18 +62,21 @@ namespace SensusPlaylist
             }
         }
 
-        private void ProcessPlaylist(string filename, string outputDirectory, 
+        private Playlist ProcessPlaylist(string filename, string outputDirectory,
             string libraryRoot)
         {
             Playlist playlist = _playlistReader.ReadAll(_fileSystem.FileOpen(filename));
             if (playlist == null || !playlist.Files.Any())
             {
                 _logger.LogDebug("[Export] No files");
+                return null;
             }
             else
             {
                 CopyPlaylistFiles(playlist, outputDirectory, libraryRoot);
             }
+
+            return playlist;
         }
 
         private void CopyPlaylistFiles(Playlist playlist, string outputDirectory, string libraryRoot)
@@ -102,8 +106,11 @@ namespace SensusPlaylist
             _fileSystem.FileCopy(filename, targetFile, true);
         }
 
-        private void ExportPlaylistFile()
+        private void ExportPlaylistFile(Playlist playlist)
         {
+            _logger.LogDebug("[Export] Writing playlist file");
+
+            _playlistWriter.WriteAll(playlist);
         }
     }
 }
