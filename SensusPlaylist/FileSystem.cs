@@ -12,13 +12,13 @@ namespace SensusPlaylist
             return File.Exists(filename);
         }
 
-        public Stream FileOpen(string filename)
+        public Stream FileOpen(string filename, FileMode fileMode, FileAccess fileAccess)
         {
             if (filename == null) throw new ArgumentNullException(nameof(filename));
 
             if (!File.Exists(filename)) throw new FileNotFoundException(filename);
 
-            return File.OpenRead(filename);
+            return new FileStream(filename, fileMode, fileAccess);
         }
 
         public void FileCopy(string source, string destination, bool overwrite)
