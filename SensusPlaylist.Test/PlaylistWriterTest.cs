@@ -72,14 +72,14 @@ namespace SensusPlaylist.Test
 
         private static Playlist GetTestPlaylist(int fileCount)
         {
-            Playlist playlist = new Playlist();
+            List<string> playlistFiles = new List<string>();
 
             for (int i = 0; i < fileCount; i++)
             {
-                playlist.Files.Add($"C:\\someLibrary\\someFolder\\someFile{i}.m4a");
+                playlistFiles.Add($"C:\\someLibrary\\someFolder\\someFile{i}.m4a");
             }
 
-            return playlist;
+            return new Playlist("somePlaylist", playlistFiles);
         }
 
         private static int GetOutputFileCount(Stream output)

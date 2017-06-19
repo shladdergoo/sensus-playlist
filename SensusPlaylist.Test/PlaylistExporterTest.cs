@@ -86,13 +86,13 @@ namespace SensusPlaylist.Test
         {
             _fileSystem.FileExists(Arg.Any<string>()).Returns(true);
 
-            _playlistReader.ReadAll(Arg.Any<Stream>()).Returns(new Playlist());
+            _playlistReader.ReadAll(Arg.Any<Stream>(), Arg.Any<string>()).Returns(GetTestPlaylist(0));
 
             IPlaylistExporter sut = new PlaylistExporter(_fileSystem, _playlistReader, _playlistWriter);
 
             sut.Export("someFile", "someOutputDir", "somelibraryRoot");
 
-            _playlistReader.Received(1).ReadAll(Arg.Any<Stream>());
+            _playlistReader.Received(1).ReadAll(Arg.Any<Stream>(), Arg.Any<string>());
         }
 
         [Fact]
@@ -102,7 +102,7 @@ namespace SensusPlaylist.Test
 
             _fileSystem.DirectoryExists(Arg.Is<string>("someOutputDir")).Returns(false);
 
-            _playlistReader.ReadAll(Arg.Any<Stream>()).Returns(new Playlist());
+            _playlistReader.ReadAll(Arg.Any<Stream>(), Arg.Any<string>()).Returns(GetTestPlaylist(0));
 
             IPlaylistExporter sut = new PlaylistExporter(_fileSystem, _playlistReader, _playlistWriter);
 
@@ -118,7 +118,7 @@ namespace SensusPlaylist.Test
 
             _fileSystem.DirectoryExists(Arg.Is<string>("someOutputDir")).Returns(true);
 
-            _playlistReader.ReadAll(Arg.Any<Stream>()).Returns(new Playlist());
+            _playlistReader.ReadAll(Arg.Any<Stream>(), Arg.Any<string>()).Returns(GetTestPlaylist(0));
 
             IPlaylistExporter sut = new PlaylistExporter(_fileSystem, _playlistReader, _playlistWriter);
 
@@ -137,7 +137,8 @@ namespace SensusPlaylist.Test
             _fileSystem.GetRelativePath(Arg.Any<string>(), Arg.Any<string>()).Returns("someFile");
             _fileSystem.GetShortName(Arg.Is<string>("C:\\someParent\\someFile")).Returns("someFile");
 
-            _playlistReader.ReadAll(Arg.Any<Stream>()).Returns(GetTestPlaylist(PlaylistTracks));
+            _playlistReader.ReadAll(Arg.Any<Stream>(), Arg.Any<string>())
+                .Returns(GetTestPlaylist(PlaylistTracks));
 
             IPlaylistExporter sut = new PlaylistExporter(_fileSystem, _playlistReader, _playlistWriter);
 
@@ -160,7 +161,8 @@ namespace SensusPlaylist.Test
             _fileSystem.GetDirectory(Arg.Is<string>("C:\\someParent\\someFile")).Returns("C:\\someParent");
             _fileSystem.GetShortName(Arg.Is<string>("C:\\someParent\\someFile")).Returns("someFile");
 
-            _playlistReader.ReadAll(Arg.Any<Stream>()).Returns(GetTestPlaylist(PlaylistTracks));
+            _playlistReader.ReadAll(Arg.Any<Stream>(), Arg.Any<string>())
+                .Returns(GetTestPlaylist(PlaylistTracks));
 
             IPlaylistExporter sut = new PlaylistExporter(_fileSystem, _playlistReader, _playlistWriter);
 
@@ -176,7 +178,8 @@ namespace SensusPlaylist.Test
             const int PlaylistTracks = 5;
 
             _fileSystem.FileExists(Arg.Any<string>()).Returns(true);
-            _playlistReader.ReadAll(Arg.Any<Stream>()).Returns(GetTestPlaylist(PlaylistTracks));
+            _playlistReader.ReadAll(Arg.Any<Stream>(), Arg.Any<string>())
+                .Returns(GetTestPlaylist(PlaylistTracks));
 
             IPlaylistExporter sut = new PlaylistExporter(_fileSystem, _playlistReader, _playlistWriter);
 
@@ -193,7 +196,7 @@ namespace SensusPlaylist.Test
                 files.Add("C:\\someParent\\someFile");
             }
 
-            return new Playlist(files);
+            return new Playlist("somePlaylist", files);
         }
     }
 }

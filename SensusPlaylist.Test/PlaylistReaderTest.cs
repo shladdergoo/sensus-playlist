@@ -2,6 +2,7 @@ using Xunit;
 
 using System;
 using System.IO;
+using System.Linq;
 
 namespace SensusPlaylist.Test
 {
@@ -14,7 +15,7 @@ namespace SensusPlaylist.Test
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                sut.ReadAll(null);
+                sut.ReadAll(null, "somePlaylist");
             });
         }
 
@@ -25,9 +26,9 @@ namespace SensusPlaylist.Test
 
             Stream playlistStream = GetTestPlaylistStreamFilesAndComments();
 
-            Playlist result = sut.ReadAll(playlistStream);
+            Playlist result = sut.ReadAll(playlistStream, "somePlaylist");
 
-            Assert.Equal(2, result.Files.Count);
+            Assert.Equal(2, result.Files.Count());
         }
 
         [Fact]
@@ -37,9 +38,9 @@ namespace SensusPlaylist.Test
 
             Stream playlistStream = GetTestPlaylistStreamOnlyFiles();
 
-            Playlist result = sut.ReadAll(playlistStream);
+            Playlist result = sut.ReadAll(playlistStream, "somePlaylist");
 
-            Assert.Equal(2, result.Files.Count);
+            Assert.Equal(2, result.Files.Count());
         }
 
         [Fact]
@@ -49,7 +50,7 @@ namespace SensusPlaylist.Test
 
             Stream playlistStream = GetTestPlaylistStreamOnlyComments();
 
-            Playlist result = sut.ReadAll(playlistStream);
+            Playlist result = sut.ReadAll(playlistStream, "somePlaylist");
 
             Assert.Null(result);
         }
@@ -61,7 +62,7 @@ namespace SensusPlaylist.Test
 
             Stream playlistStream = new MemoryStream();
 
-            Playlist result = sut.ReadAll(playlistStream);
+            Playlist result = sut.ReadAll(playlistStream, "somePlaylist");
 
             Assert.Null(result);
         }

@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 
 namespace SensusPlaylist
 {
@@ -21,7 +22,7 @@ namespace SensusPlaylist
         {
             if (playlist == null) throw new ArgumentNullException(nameof(playlist));
 
-            if (playlist.Files == null || playlist.Files.Count == 0) return;
+            if (playlist.Files == null || !playlist.Files.Any()) return;
 
             StreamWriter writer = new StreamWriter(_outputStream);
 

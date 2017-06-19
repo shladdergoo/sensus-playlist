@@ -5,16 +5,13 @@ namespace SensusPlaylist
 {
     public class Playlist
     {
-        public Playlist()
-        {
-            Files = new List<string>();
-        }
-
-        public Playlist(IEnumerable<string> files)
+        public Playlist(string name, IEnumerable<string> files)
         {
             Files = new List<string>(files);
         }
 
-        public IList<string> Files { get; private set; }
+        public string Name { get; private set; }
+
+        public IEnumerable<string> Files { get; private set; }
     }
 }

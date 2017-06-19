@@ -66,7 +66,7 @@ namespace SensusPlaylist
             string libraryRoot)
         {
             Playlist playlist = _playlistReader.ReadAll(_fileSystem.FileOpen(filename,
-                FileMode.Open, FileAccess.Read));
+                FileMode.Open, FileAccess.Read), _fileSystem.GetShortName(filename));
             if (playlist == null || !playlist.Files.Any())
             {
                 _logger.LogDebug("[Export] No files");
