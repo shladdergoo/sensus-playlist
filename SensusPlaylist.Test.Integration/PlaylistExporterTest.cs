@@ -1,4 +1,5 @@
 using Xunit;
+using NSubstitute;
 
 using System;
 using System.IO;
@@ -10,6 +11,7 @@ namespace SensusPlaylist.Test.Integration
     {
         private IFileSystem _fileSystem;
         private IPlaylistReader _playlistReader;
+        IPlaylistWriter _playlistWriter;
 
         public PlaylistExporterTest()
         {
@@ -20,16 +22,24 @@ namespace SensusPlaylist.Test.Integration
         [Fact]
         public void Export_CorrectInputs_Succeeds()
         {
-            PlaylistExporter sut = new PlaylistExporter(_fileSystem, _playlistReader);
+            _playlistWriter = Substitute.For<IPlaylistWriter>();
+
+            PlaylistExporter sut = new PlaylistExporter(_fileSystem, _playlistReader,
+                _playlistWriter);
 
             sut.Export(".\\TestData\\Laptop.m3u", "C:\\temp\\output",
                 "C:\\Users\\jfox\\Music\\iTunes\\iTunes Media\\Music");
         }
 
-       [Fact]
+        [Fact]
         public void Export_FilesAndPlaylist_Succeeds()
         {
-            PlaylistExporter sut = new PlaylistExporter(_fileSystem, _playlistReader);
+            IPlaylistWriter playlistWriter = new PlaylistWriter(
+                new FileStream("C:\\temp\\outputLaptop.m3u", FileMode.Create,
+                 FileAccess.Write), new SensusPlaylistFormatter(_fileSystem,
+                 "C:\\Users\\jfox\\Music\\iTunes\\iTunes Media\\Music"));
+
+            PlaylistExporter sut = new PlaylistExporter(_fileSystem, _playlistReader, _playlistWriter);
 
             sut.Export(".\\TestData\\Laptop.m3u", "C:\\temp\\output",
                 "C:\\Users\\jfox\\Music\\iTunes\\iTunes Media\\Music", true);

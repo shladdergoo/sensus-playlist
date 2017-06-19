@@ -11,14 +11,18 @@ namespace SensusPlaylist
         private ILogger _logger = ServiceProvider.GetLogger<PlaylistExporter>();
         private IFileSystem _fileSystem;
         private IPlaylistReader _playlistReader;
+        private IPlaylistWriter _playlistWriter;
 
-        public PlaylistExporter(IFileSystem fileSystem, IPlaylistReader playlistReader)
+        public PlaylistExporter(IFileSystem fileSystem, IPlaylistReader playlistReader,
+            IPlaylistWriter playlistWriter)
         {
             if (fileSystem == null) throw new ArgumentNullException(nameof(fileSystem));
             if (playlistReader == null) throw new ArgumentNullException(nameof(playlistReader));
+            if (playlistWriter == null) throw new ArgumentNullException(nameof(playlistWriter));
 
             _fileSystem = fileSystem;
             _playlistReader = playlistReader;
+            _playlistWriter = playlistWriter;
         }
 
         public void Export(string filename, string outputDirectory, string libraryRoot)
@@ -39,6 +43,8 @@ namespace SensusPlaylist
             InitializeOutputDirectory(outputDirectory);
 
             ProcessPlaylist(filename, outputDirectory, libraryRoot);
+
+            if(exportPlaylistFile) ExportPlaylistFile();
             
             _logger.LogDebug("[Export] End");
         }
@@ -94,6 +100,10 @@ namespace SensusPlaylist
             string targetFile = Path.Combine(targetDirectory, fileShortName);
 
             _fileSystem.FileCopy(filename, targetFile, true);
+        }
+
+        private void ExportPlaylistFile()
+        {
         }
     }
 }

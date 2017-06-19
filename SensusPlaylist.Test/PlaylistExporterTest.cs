@@ -11,11 +11,13 @@ namespace SensusPlaylist.Test
     {
         private IFileSystem _fileSystem;
         private IPlaylistReader _playlistReader;
+        private IPlaylistWriter _playlistWriter;
 
         public PlaylistExporterTest()
         {
             _fileSystem = Substitute.For<IFileSystem>();
             _playlistReader = Substitute.For<IPlaylistReader>();
+            _playlistWriter = Substitute.For<IPlaylistWriter>();
         }
 
         [Fact]
@@ -23,7 +25,7 @@ namespace SensusPlaylist.Test
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                IPlaylistExporter sut = new PlaylistExporter(null, _playlistReader);
+                IPlaylistExporter sut = new PlaylistExporter(null, _playlistReader, _playlistWriter);
             });
         }
 
@@ -32,14 +34,23 @@ namespace SensusPlaylist.Test
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                IPlaylistExporter sut = new PlaylistExporter(_fileSystem, null);
+                IPlaylistExporter sut = new PlaylistExporter(_fileSystem, null, _playlistWriter);
+            });
+        }
+
+        [Fact]
+        public void Ctor_PlaylistWriterNull_ThrowsException()
+        {
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                IPlaylistExporter sut = new PlaylistExporter(_fileSystem, _playlistReader, null);
             });
         }
 
         [Fact]
         public void Export_FilenameNull_ThrowsException()
         {
-            IPlaylistExporter sut = new PlaylistExporter(_fileSystem, _playlistReader);
+            IPlaylistExporter sut = new PlaylistExporter(_fileSystem, _playlistReader, _playlistWriter);
 
             Assert.Throws<ArgumentNullException>(() => sut.Export(null, "someOutputDir", "somelibraryRoot"));
         }
@@ -47,7 +58,7 @@ namespace SensusPlaylist.Test
         [Fact]
         public void Export_OutputDirNull_ThrowsException()
         {
-            IPlaylistExporter sut = new PlaylistExporter(_fileSystem, _playlistReader);
+            IPlaylistExporter sut = new PlaylistExporter(_fileSystem, _playlistReader, _playlistWriter);
 
             Assert.Throws<ArgumentNullException>(() => sut.Export("someFile", null, "somelibraryRoot"));
         }
@@ -55,7 +66,7 @@ namespace SensusPlaylist.Test
         [Fact]
         public void Export_LibraryRootNull_ThrowsException()
         {
-            IPlaylistExporter sut = new PlaylistExporter(_fileSystem, _playlistReader);
+            IPlaylistExporter sut = new PlaylistExporter(_fileSystem, _playlistReader, _playlistWriter);
 
             Assert.Throws<ArgumentNullException>(() => sut.Export("someFile", "someOutputDir", null));
         }
@@ -65,7 +76,7 @@ namespace SensusPlaylist.Test
         {
             _fileSystem.FileExists(Arg.Any<string>()).Returns(false);
 
-            IPlaylistExporter sut = new PlaylistExporter(_fileSystem, _playlistReader);
+            IPlaylistExporter sut = new PlaylistExporter(_fileSystem, _playlistReader, _playlistWriter);
 
             Assert.Throws<FileNotFoundException>(() => sut.Export("someFile", "someOutputDir", "somelibraryRoot"));
         }
@@ -77,7 +88,7 @@ namespace SensusPlaylist.Test
 
             _playlistReader.ReadAll(Arg.Any<Stream>()).Returns(new Playlist());
 
-            IPlaylistExporter sut = new PlaylistExporter(_fileSystem, _playlistReader);
+            IPlaylistExporter sut = new PlaylistExporter(_fileSystem, _playlistReader, _playlistWriter);
 
             sut.Export("someFile", "someOutputDir", "somelibraryRoot");
 
@@ -93,7 +104,7 @@ namespace SensusPlaylist.Test
 
             _playlistReader.ReadAll(Arg.Any<Stream>()).Returns(new Playlist());
 
-            IPlaylistExporter sut = new PlaylistExporter(_fileSystem, _playlistReader);
+            IPlaylistExporter sut = new PlaylistExporter(_fileSystem, _playlistReader, _playlistWriter);
 
             sut.Export("someFile", "someOutputDir", "somelibraryRoot");
 
@@ -109,7 +120,7 @@ namespace SensusPlaylist.Test
 
             _playlistReader.ReadAll(Arg.Any<Stream>()).Returns(new Playlist());
 
-            IPlaylistExporter sut = new PlaylistExporter(_fileSystem, _playlistReader);
+            IPlaylistExporter sut = new PlaylistExporter(_fileSystem, _playlistReader, _playlistWriter);
 
             sut.Export("someFile", "someOutputDir", "somelibraryRoot");
 
@@ -128,7 +139,7 @@ namespace SensusPlaylist.Test
 
             _playlistReader.ReadAll(Arg.Any<Stream>()).Returns(GetTestPlaylist(PlaylistTracks));
 
-            IPlaylistExporter sut = new PlaylistExporter(_fileSystem, _playlistReader);
+            IPlaylistExporter sut = new PlaylistExporter(_fileSystem, _playlistReader, _playlistWriter);
 
             sut.Export("C:\\someParent\\someFile", "someOutputDir", "C:\\someParent");
 
@@ -151,7 +162,7 @@ namespace SensusPlaylist.Test
 
             _playlistReader.ReadAll(Arg.Any<Stream>()).Returns(GetTestPlaylist(PlaylistTracks));
 
-            IPlaylistExporter sut = new PlaylistExporter(_fileSystem, _playlistReader);
+            IPlaylistExporter sut = new PlaylistExporter(_fileSystem, _playlistReader, _playlistWriter);
 
             sut.Export("C:\\someParent\\someFile", "someOutputDir", "C:\\someParent");
 
