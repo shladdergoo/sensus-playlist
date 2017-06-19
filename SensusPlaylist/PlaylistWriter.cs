@@ -6,25 +6,23 @@ namespace SensusPlaylist
 {
     public class PlaylistWriter : IPlaylistWriter
     {
-        private Stream _outputStream;
         private IPlaylistFormatter _formatter;
 
-        public PlaylistWriter(Stream outputStream, IPlaylistFormatter formatter)
+        public PlaylistWriter(IPlaylistFormatter formatter)
         {
-            if (outputStream == null) throw new ArgumentNullException(nameof(outputStream));
             if (formatter == null) throw new ArgumentNullException(nameof(formatter));
             
-            _outputStream = outputStream;
             _formatter = formatter;
         }
 
-        public void WriteAll(Playlist playlist)
+        public void WriteAll(Playlist playlist, Stream outputStream)
         {
             if (playlist == null) throw new ArgumentNullException(nameof(playlist));
+            if (outputStream == null) throw new ArgumentNullException(nameof(outputStream));
 
             if (playlist.Files == null || !playlist.Files.Any()) return;
 
-            StreamWriter writer = new StreamWriter(_outputStream);
+            StreamWriter writer = new StreamWriter(outputStream);
 
             foreach(string filename in playlist.Files)
             {
@@ -32,7 +30,7 @@ namespace SensusPlaylist
             }
 
             writer.Flush();
-            _outputStream.Position = 0;
+            outputStream.Position = 0;
         }
     }
 }

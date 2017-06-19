@@ -185,7 +185,7 @@ namespace SensusPlaylist.Test
 
             sut.Export("C:\\someParent\\someFile", "someOutputDir", "C:\\someParent", true);
 
-            _playlistWriter.Received().WriteAll(Arg.Any<Playlist>());
+            _playlistWriter.Received().WriteAll(Arg.Any<Playlist>(), Arg.Any<Stream>());
         }
 
         private Playlist GetTestPlaylist(int playlistTracks)

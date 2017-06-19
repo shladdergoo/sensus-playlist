@@ -17,30 +17,28 @@ namespace SensusPlaylist.Test
         }
 
         [Fact]
-        public void Ctor_OutputStreamNull_ThrowsException()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                IPlaylistWriter sut = new PlaylistWriter(null, _formatter);
-            });
-        }
-
-        [Fact]
         public void Ctor_FormatterNull_ThrowsException()
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                IPlaylistWriter sut = new PlaylistWriter(new MemoryStream(), null);
+                IPlaylistWriter sut = new PlaylistWriter(null);
             });
         }
 
         [Fact]
         public void WriteAll_PlaylistNull_ThrowsException()
         {
-            PlaylistWriter sut = new PlaylistWriter(new MemoryStream(),
-                _formatter);
+            PlaylistWriter sut = new PlaylistWriter(_formatter);
 
-            Assert.Throws<ArgumentNullException>(() => sut.WriteAll(null));
+            Assert.Throws<ArgumentNullException>(() => sut.WriteAll(null, new MemoryStream()));
+        }
+
+        [Fact]
+        public void WriteAll_OutputStreamNull_ThrowsException()
+        {
+            PlaylistWriter sut = new PlaylistWriter(_formatter);
+
+            Assert.Throws<ArgumentNullException>(() => sut.WriteAll(GetTestPlaylist(0), null));
         }
 
         [Fact]
@@ -48,9 +46,9 @@ namespace SensusPlaylist.Test
         {
             Stream output = new MemoryStream();
 
-            PlaylistWriter sut = new PlaylistWriter(output, _formatter);
+            PlaylistWriter sut = new PlaylistWriter(_formatter);
 
-            sut.WriteAll(GetTestPlaylist(0));
+            sut.WriteAll(GetTestPlaylist(0), output);
 
             Assert.Equal(0, output.Length);
         }
@@ -62,9 +60,9 @@ namespace SensusPlaylist.Test
 
             Stream output = new MemoryStream();
 
-            PlaylistWriter sut = new PlaylistWriter(output, _formatter);
+            PlaylistWriter sut = new PlaylistWriter(_formatter);
 
-            sut.WriteAll(GetTestPlaylist(FileCount));
+            sut.WriteAll(GetTestPlaylist(FileCount), output);
 
             Assert.NotEqual(0, output.Length);
             Assert.Equal(FileCount, GetOutputFileCount(output));

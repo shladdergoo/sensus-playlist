@@ -45,7 +45,7 @@ namespace SensusPlaylist
             Playlist playlist;
             if ((playlist = ProcessPlaylist(filename, outputDirectory, libraryRoot)) != null)
             {
-                if (exportPlaylistFile) ExportPlaylistFile(playlist);
+                if (exportPlaylistFile) ExportPlaylistFile(playlist, outputDirectory);
             }
             _logger.LogDebug("[Export] End");
         }
@@ -107,11 +107,14 @@ namespace SensusPlaylist
             _fileSystem.FileCopy(filename, targetFile, true);
         }
 
-        private void ExportPlaylistFile(Playlist playlist)
+        private void ExportPlaylistFile(Playlist playlist, string outputDirectory)
         {
             _logger.LogDebug("[Export] Writing playlist file");
 
-            _playlistWriter.WriteAll(playlist);
+            string exportFilename = Path.Combine(outputDirectory, playlist.Name);
+
+            _playlistWriter.WriteAll(playlist, _fileSystem.FileOpen(exportFilename,
+                FileMode.Create, FileAccess.Write));
         }
     }
 }
