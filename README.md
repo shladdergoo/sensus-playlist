@@ -1,6 +1,8 @@
 # sensus-playlist
 
-Playlist and media file management for the Volvo Sensus Touch media platform
+Playlist and media file management for the Volvo Sensus Touch media platform.
+
+dotnet core console app
 
 ## Installation
 
