@@ -1,17 +1,27 @@
 <Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
-
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Test|AnyCPU' ">
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp1.0</TargetFramework>
     <DebugType>full</DebugType>
   </PropertyGroup>
-
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' != 'Test|AnyCPU' ">
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp1.0</TargetFramework>
     <RuntimeIdentifiers>win10-x64</RuntimeIdentifiers>
+    <Product>sensus-playlist</Product>
+    <Description>Mp3 library management for the Volvo Sensus Touch media platform</Description>
+    <Company>Datagility</Company>
+    <VersionPrefix>1.0.0</VersionPrefix> <!-- Used to set both AssemblyVersion and AssemblyInformationalVersionAttribute
+                                          dotnet publish ~~version-suffix can supply a SemVer 
+                                          pre-release version value which is appended to 
+                                          AssemblyInformationalVersionAttribute -->
+    <AssemblyVersion>1.0.0</AssemblyVersion> <!--  Maps to AssemblyVersionAttribute
+                                                  Auto calculated from VersionPrefix if not specifed
+                                                  Does not override AssemblyInformationalVersionAttribute
+                                                  if it is specified -->
+    <FileVersion>1.0.0</FileVersion> <!-- Maps to AssemblyFileVersionAttribute -->
+    <Copyright>James Fox, 2017</Copyright>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="1.1.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="1.1.1" />
@@ -19,8 +29,6 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="1.1.1" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="1.1.2" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="1.1.2" />
-
     <None Include="..\appsettings.json" CopyToOutputDirectory="Always" />
   </ItemGroup>
-
 </Project>
