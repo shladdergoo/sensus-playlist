@@ -16,8 +16,6 @@ namespace SensusPlaylist
         {
             if (filename == null) throw new ArgumentNullException(nameof(filename));
 
-            if (!File.Exists(filename)) throw new FileNotFoundException(filename);
-
             return new FileStream(filename, fileMode, fileAccess);
         }
 
