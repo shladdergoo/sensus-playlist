@@ -1,0 +1,1 @@
+dotnet publish .\SensusPlaylist\SensusPlaylist.csproj -c Release -r win10-x64

@@ -9,6 +9,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' != 'Test|AnyCPU' ">
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp1.0</TargetFramework>
+    <RuntimeIdentifiers>win10-x64</RuntimeIdentifiers>
   </PropertyGroup>
 
   <ItemGroup>
