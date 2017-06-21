@@ -12,7 +12,15 @@ namespace SensusPlaylist.Test
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                Playlist sut = new Playlist(null, new List<string>());
+                Playlist sut = new Playlist(null, "someLibraryRoot", new List<string>());
+            });
+        }
+
+        public void Ctor_LibraryRootNull_ThrowsException()
+        {
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                Playlist sut = new Playlist("someName", null, new List<string>());
             });
         }
 
@@ -21,7 +29,7 @@ namespace SensusPlaylist.Test
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                Playlist sut = new Playlist("someName", null);
+                Playlist sut = new Playlist("someName", "someLibraryRoot", null);
             });
         }
     }

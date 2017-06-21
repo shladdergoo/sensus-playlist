@@ -9,18 +9,19 @@ namespace SensusPlaylist
     {
         private const string playlistCommentPrefix = "#";
 
-        public Playlist ReadAll(Stream playlistStream, string playlistName)
+        public Playlist ReadAll(Stream playlistStream, string playlistName, string libraryRoot)
         {
             if (playlistStream == null) throw new ArgumentNullException(nameof(playlistStream));
 
             StreamReader reader = new StreamReader(playlistStream);
 
-            Playlist playlist = ReadPlaylistStream(reader, playlistName);
+            Playlist playlist = ReadPlaylistStream(reader, playlistName, libraryRoot);
 
             return playlist.Files.Any() ? playlist : null;
         }
 
-        private static Playlist ReadPlaylistStream(StreamReader reader, string playlistName)
+        private static Playlist ReadPlaylistStream(StreamReader reader, string playlistName, 
+            string libraryRoot)
         {
             List<string> playlistFiles = new List<string>();
 
@@ -36,7 +37,7 @@ namespace SensusPlaylist
                 }
             } while (playlistLine != null);
 
-            return new Playlist(playlistName, playlistFiles);
+            return new Playlist(playlistName, libraryRoot, playlistFiles);
         }
     }
 }

@@ -77,7 +77,7 @@ namespace SensusPlaylist.Test
                 playlistFiles.Add($"C:\\someLibrary\\someFolder\\someFile{i}.m4a");
             }
 
-            return new Playlist("somePlaylist", playlistFiles);
+            return new Playlist("somePlaylist", "someLibraryRoot", playlistFiles);
         }
 
         private static int GetOutputFileCount(Stream output)

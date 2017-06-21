@@ -15,7 +15,7 @@ namespace SensusPlaylist.Test
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                sut.ReadAll(null, "somePlaylist");
+                sut.ReadAll(null, "somePlaylist", "someLibraryRoot");
             });
         }
 
@@ -26,7 +26,7 @@ namespace SensusPlaylist.Test
 
             Stream playlistStream = GetTestPlaylistStreamFilesAndComments();
 
-            Playlist result = sut.ReadAll(playlistStream, "somePlaylist");
+            Playlist result = sut.ReadAll(playlistStream, "somePlaylist", "someLibraryRoot");
 
             Assert.Equal(2, result.Files.Count());
         }
@@ -38,7 +38,7 @@ namespace SensusPlaylist.Test
 
             Stream playlistStream = GetTestPlaylistStreamOnlyFiles();
 
-            Playlist result = sut.ReadAll(playlistStream, "somePlaylist");
+            Playlist result = sut.ReadAll(playlistStream, "somePlaylist", "someLibraryRoot");
 
             Assert.Equal(2, result.Files.Count());
         }
@@ -50,7 +50,7 @@ namespace SensusPlaylist.Test
 
             Stream playlistStream = GetTestPlaylistStreamOnlyComments();
 
-            Playlist result = sut.ReadAll(playlistStream, "somePlaylist");
+            Playlist result = sut.ReadAll(playlistStream, "somePlaylist", "someLibraryRoot");
 
             Assert.Null(result);
         }
@@ -62,7 +62,7 @@ namespace SensusPlaylist.Test
 
             Stream playlistStream = new MemoryStream();
 
-            Playlist result = sut.ReadAll(playlistStream, "somePlaylist");
+            Playlist result = sut.ReadAll(playlistStream, "somePlaylist", "someLibraryRoot");
 
             Assert.Null(result);
         }
