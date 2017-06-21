@@ -16,6 +16,7 @@ namespace SensusPlaylist.Test
             });
         }
 
+        [Fact]
         public void Ctor_LibraryRootNull_ThrowsException()
         {
             Assert.Throws<ArgumentNullException>(() =>
