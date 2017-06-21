@@ -35,8 +35,7 @@ namespace SensusPlaylist.Test.Integration
         public void Export_FilesAndPlaylist_Succeeds()
         {
             _playlistWriter = new PlaylistWriter(
-                new SensusPlaylistFormatter(_fileSystem,
-                 "C:\\Users\\jfox\\Music\\iTunes\\iTunes Media\\Music"));
+                new SensusPlaylistFormatter(_fileSystem));
 
             PlaylistExporter sut = new PlaylistExporter(_fileSystem, _playlistReader, _playlistWriter);
 

@@ -26,7 +26,7 @@ namespace SensusPlaylist
 
             foreach(string filename in playlist.Files)
             {
-                writer.WriteLine(_formatter.FormatPlaylistFile(filename));
+                writer.WriteLine(_formatter.FormatPlaylistFile(filename, playlist.LibraryRoot));
             }
 
             writer.Flush();
