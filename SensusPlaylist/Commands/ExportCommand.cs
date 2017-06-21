@@ -18,14 +18,18 @@ namespace SensusPlaylist
                 "outputDirectory",
                 "Enter the path of the output directory");
 
+            CommandOption exportPlaylistFile = command.Option(
+                "-e | --e | --exportPlaylistFile", "Export playlist file", CommandOptionType.NoValue);
+
             command.HelpOption(HelpOptionTemplate);
 
             command.OnExecute(() =>
             {
                 if (filename.Value != null && outputDirectory != null)
                 {
-                    ServiceProvider.GetService<IPlaylistExporter>().Export(filename.Value, 
-                        outputDirectory.Value, Configuration.Config.LibraryRoot);
+                    ServiceProvider.GetService<IPlaylistExporter>().Export(filename.Value,
+                        outputDirectory.Value, Configuration.Config.LibraryRoot,
+                        exportPlaylistFile.HasValue());
                 }
                 else
                 {

@@ -15,6 +15,8 @@ namespace SensusPlaylist
                 .AddLogging()
                 .AddSingleton<IFileSystem, FileSystem>()
                 .AddSingleton<IPlaylistReader, PlaylistReader>()
+                .AddSingleton<IPlaylistFormatter, SensusPlaylistFormatter>()
+                .AddSingleton<IPlaylistWriter, PlaylistWriter>()
                 .AddSingleton<IPlaylistExporter, PlaylistExporter>()
                 .BuildServiceProvider();
 
