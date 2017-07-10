@@ -6,5 +6,8 @@ namespace SensusPlaylist
 
         void Export(string filename, string outputDirectory, 
             string libraryRoot, bool exportPlaylistFile);
+
+        void Export(string filename, string outputDirectory, 
+            string libraryRoot, ExportMode exportMode);
     }
 }
