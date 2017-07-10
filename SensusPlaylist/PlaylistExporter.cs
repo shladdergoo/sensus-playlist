@@ -25,6 +25,11 @@ namespace SensusPlaylist
             _playlistWriter = playlistWriter;
         }
 
+        public void Export(string filename, string outputDirectory)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Export(string filename, string outputDirectory, string libraryRoot)
         {
             Export(filename, outputDirectory, libraryRoot, false);
@@ -40,6 +45,14 @@ namespace SensusPlaylist
             if (libraryRoot == null) throw new ArgumentNullException(nameof(libraryRoot));
             if (!_fileSystem.FileExists(filename)) throw new FileNotFoundException(filename);
 
+            DoExport(filename, outputDirectory, libraryRoot, exportPlaylistFile);
+
+            _logger.LogDebug("[Export] End");
+        }
+
+        private void DoExport(string filename, string outputDirectory, string libraryRoot,
+            bool exportPlaylistFile)
+        {
             InitializeOutputDirectory(outputDirectory);
 
             Playlist playlist;
@@ -47,7 +60,6 @@ namespace SensusPlaylist
             {
                 if (exportPlaylistFile) ExportPlaylistFile(playlist, outputDirectory);
             }
-            _logger.LogDebug("[Export] End");
         }
 
         private void InitializeOutputDirectory(string outputDirectory)
