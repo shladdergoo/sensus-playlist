@@ -43,19 +43,42 @@ namespace SensusPlaylist
         private void DoExport(string filename, string outputDirectory, string libraryRoot,
             ExportMode exportMode)
         {
+            if (exportMode == ExportMode.None) return;
+
             InitializeOutputDirectory(outputDirectory);
 
-            Playlist playlist;
-            if ((playlist = ProcessPlaylist(filename, outputDirectory, libraryRoot)) != null)
+            Playlist playlist = ReadPlaylistFile(filename, libraryRoot);
+
+            if (playlist == null || !playlist.Files.Any())
             {
-                if (HasPlaylistFileFlag(exportMode)) ExportPlaylistFile(playlist, outputDirectory);
+                _logger.LogDebug("[Export] Could not read playlist contents");
+                return;
+            }
+
+            ExportFiles(playlist, outputDirectory, libraryRoot, exportMode);
+        }
+
+        private void ExportFiles(Playlist playlist, string outputDirectory, string libraryRoot,
+            ExportMode exportMode)
+        {
+            if (HasExportPlaylistContents(exportMode))
+            {
+                ExportPlaylistContents(playlist, outputDirectory, libraryRoot);
+            }
+            if (HasExportPlaylistFile(exportMode))
+            {
+                ExportPlaylistFile(playlist, outputDirectory);
             }
         }
 
-        // TEMPORARY - remove after refactoring complete.
-        private static bool HasPlaylistFileFlag(ExportMode exportMode)
+        private static bool HasExportPlaylistFile(ExportMode exportMode)
         {
             return ((exportMode & ExportMode.PlaylistFile) == ExportMode.PlaylistFile);
+        }
+
+        private static bool HasExportPlaylistContents(ExportMode exportMode)
+        {
+            return ((exportMode & ExportMode.PlaylistContents) == ExportMode.PlaylistContents);
         }
 
         private void InitializeOutputDirectory(string outputDirectory)
@@ -70,31 +93,22 @@ namespace SensusPlaylist
             }
         }
 
-        private Playlist ProcessPlaylist(string filename, string outputDirectory,
+        private void ExportPlaylistContents(Playlist playlist, string outputDirectory,
             string libraryRoot)
-        {
-            Playlist playlist = _playlistReader.ReadAll(_fileSystem.FileOpen(filename,
-                FileMode.Open, FileAccess.Read), _fileSystem.GetShortName(filename),
-                libraryRoot);
-            if (playlist == null || !playlist.Files.Any())
-            {
-                _logger.LogDebug("[Export] No files");
-                return null;
-            }
-            else
-            {
-                CopyPlaylistFiles(playlist, outputDirectory, libraryRoot);
-            }
-
-            return playlist;
-        }
-
-        private void CopyPlaylistFiles(Playlist playlist, string outputDirectory, string libraryRoot)
         {
             foreach (string filename in playlist.Files)
             {
                 CopyFileWithParentsRelativeToRoot(filename, outputDirectory, libraryRoot);
             }
+        }
+
+        private Playlist ReadPlaylistFile(string filename, string libraryRoot)
+        {
+            Playlist playlist = _playlistReader.ReadAll(_fileSystem.FileOpen(filename,
+                FileMode.Open, FileAccess.Read), _fileSystem.GetShortName(filename),
+                libraryRoot);
+
+            return playlist;
         }
 
         private void CopyFileWithParentsRelativeToRoot(string filename, string outputDirectory, string libraryRoot)
