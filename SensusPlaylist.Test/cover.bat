@@ -6,7 +6,7 @@ SET reportgenerator="%USERPROFILE%\.nuget\packages\ReportGenerator\2.5.2\tools\R
 SET opencoverConverter="%USERPROFILE%\.nuget\packages\OpenCoverToCoberturaConverter\0.2.6\tools\OpenCoverToCoberturaConverter.exe"
 
 SET targetargs="test SensusPlaylist.Test\SensusPlaylist.Test.csproj --configuration Test"  
-SET filter="+[SensusPlaylist]* -[*.Test]* -[*.Test.Integration]* -[xunit.*]* -[FluentValidation]* -[SensusPlaylist]SensusPlaylist.Program -[SensusPlaylist]SensusPlaylist.AppConfig -[SensusPlaylist]SensusPlaylist.Configuration -[SensusPlaylist]SensusPlaylist.FileSystem -[SensusPlaylist]SensusPlaylist.ServiceProvider" 
+SET filter="+[SensusPlaylist]* -[*.Test]* -[*.Test.Integration]* -[xunit.*]* -[FluentValidation]* -[SensusPlaylist]SensusPlaylist.Program -[SensusPlaylist]SensusPlaylist.AppConfig -[SensusPlaylist]SensusPlaylist.Configuration -[SensusPlaylist]SensusPlaylist.FileSystem -[SensusPlaylist]SensusPlaylist.ServiceProvider -[SensusPlaylist]SensusPlaylist.ExportCommand" 
 SET coveragefile=SensusPlaylist.Test\Coverage.xml
 SET coberturaCoverageFile=SensusPlaylist.Test\Cobertura-Coverage.xml
 SET coveragedir=SensusPlaylist.Test\Coverage
