@@ -4,7 +4,7 @@ namespace SensusPlaylist
 {
     class Program
     {
-        const string HelpOptionTemplate = "-? | -h | --help";
+        const string HelpOptionTemplate = "-? | -h | --h | --help";
         static void Main(string[] args)
         {
             ServiceProvider.Build();

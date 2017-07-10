@@ -53,5 +53,14 @@ namespace SensusPlaylist.Test
 
             Assert.False((sut & ExportMode.PlaylistFile) == ExportMode.PlaylistFile);
         }
+
+        [Fact]
+        public void Enum_NotOnlyNone_DoesntEqualNone()
+        {
+            ExportMode sut = ExportMode.None;
+            sut |= ExportMode.PlaylistContents;
+
+            Assert.False(sut == ExportMode.None);      
+        }
     }
 }

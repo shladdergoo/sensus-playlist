@@ -6,7 +6,7 @@ namespace SensusPlaylist
 {
     class ExportCommand
     {
-        const string HelpOptionTemplate = "-? | -h | --help";
+        const string HelpOptionTemplate = "-? | -h | --h | --help";
 
         public static void Configure(CommandLineApplication command)
         {
@@ -21,6 +21,9 @@ namespace SensusPlaylist
             CommandOption exportPlaylistFile = command.Option(
                 "-e | --e | --exportPlaylistFile", "Export playlist file", CommandOptionType.NoValue);
 
+            CommandOption suppressPlaylistContents = command.Option(
+                "-s | --s | --suppressPlaylistContents", "Suppress Playlist Contents", CommandOptionType.NoValue);
+
             command.HelpOption(HelpOptionTemplate);
 
             command.OnExecute(() =>
@@ -29,7 +32,7 @@ namespace SensusPlaylist
                 {
                     ServiceProvider.GetService<IPlaylistExporter>().Export(filename.Value,
                         outputDirectory.Value, Configuration.Config.LibraryRoot,
-                        GetExportMode(exportPlaylistFile));
+                        GetExportMode(exportPlaylistFile, suppressPlaylistContents));
                 }
                 else
                 {
@@ -39,12 +42,20 @@ namespace SensusPlaylist
             });
         }
 
-        private static ExportMode GetExportMode(CommandOption playlistFileOption)
+        private static ExportMode GetExportMode(CommandOption playlistFileOption,
+            CommandOption suppressContentsOption)
         {
-            ExportMode exportMode = ExportMode.PlaylistContents;
+            ExportMode exportMode = ExportMode.None;
 
-            if(playlistFileOption.HasValue()) exportMode |= ExportMode.PlaylistFile;
+            if (!suppressContentsOption.HasValue())
+            {
+                exportMode |= ExportMode.PlaylistContents;
+            }
 
+            if (playlistFileOption.HasValue())
+            {
+                exportMode |= ExportMode.PlaylistFile;
+            }
             return exportMode;
         }
     }
