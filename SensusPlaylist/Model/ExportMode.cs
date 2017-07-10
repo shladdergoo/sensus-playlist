@@ -1,9 +1,12 @@
+using System;
+
 namespace SensusPlaylist
 {
-    enum ExportMode
+    [Flags]
+    public enum ExportMode
     {
-        PlaylistFile = 0,
-        PlaylistContents = 1,
-        PlaylistFileAndContents = 2
+        None = 0,
+        PlaylistFile = 1,
+        PlaylistContents = 2
     }
 }
