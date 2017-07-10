@@ -214,6 +214,24 @@ namespace SensusPlaylist.Test
             _playlistWriter.Received().WriteAll(Arg.Any<Playlist>(), Arg.Any<Stream>());
         }
 
+        [Fact]
+        public void Export_ExportPlaylistFileOnly_ExportssPlaylistFile()
+        {
+            const int PlaylistTracks = 5;
+
+            _fileSystem.FileExists(Arg.Any<string>()).Returns(true);
+            _playlistReader.ReadAll(Arg.Any<Stream>(), Arg.Any<string>(), Arg.Any<string>())
+                .Returns(GetTestPlaylist(PlaylistTracks));
+
+            IPlaylistExporter sut = new PlaylistExporter(_fileSystem, _playlistReader, _playlistWriter);
+
+            sut.Export("C:\\someParent\\someFile", "someOutputDir", "C:\\someParent",
+                ExportMode.PlaylistFile);
+
+            _playlistWriter.Received().WriteAll(Arg.Any<Playlist>(), Arg.Any<Stream>());
+            _fileSystem.DidNotReceive().FileCopy(Arg.Any<string>(), Arg.Any<string>(),
+                Arg.Any<bool>());
+        }
         private Playlist GetTestPlaylist(int playlistTracks)
         {
             List<string> files = new List<string>();
