@@ -25,11 +25,6 @@ namespace SensusPlaylist
             _playlistWriter = playlistWriter;
         }
 
-        public void Export(string filename, string outputDirectory)
-        {
-            throw new NotImplementedException();
-        }
-
         public void Export(string filename, string outputDirectory, string libraryRoot)
         {
             Export(filename, outputDirectory, libraryRoot, false);
