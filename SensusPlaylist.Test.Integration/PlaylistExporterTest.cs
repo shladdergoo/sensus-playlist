@@ -28,7 +28,7 @@ namespace SensusPlaylist.Test.Integration
                 _playlistWriter);
 
             sut.Export(".\\TestData\\Laptop.m3u", "C:\\temp\\output",
-                "C:\\Users\\jfox\\Music\\iTunes\\iTunes Media\\Music");
+                "C:\\Users\\jfox\\Music\\iTunes\\iTunes Media\\Music", ExportMode.PlaylistContents);
         }
 
         [Fact]
@@ -40,7 +40,8 @@ namespace SensusPlaylist.Test.Integration
             PlaylistExporter sut = new PlaylistExporter(_fileSystem, _playlistReader, _playlistWriter);
 
             sut.Export(".\\TestData\\Laptop.m3u", "C:\\temp\\output",
-                "C:\\Users\\jfox\\Music\\iTunes\\iTunes Media\\Music", true);
+                "C:\\Users\\jfox\\Music\\iTunes\\iTunes Media\\Music", 
+                ExportMode.PlaylistContents | ExportMode.PlaylistFile);
         }
     }
 }

@@ -29,7 +29,7 @@ namespace SensusPlaylist
                 {
                     ServiceProvider.GetService<IPlaylistExporter>().Export(filename.Value,
                         outputDirectory.Value, Configuration.Config.LibraryRoot,
-                        exportPlaylistFile.HasValue());
+                        GetExportMode(exportPlaylistFile));
                 }
                 else
                 {
@@ -37,6 +37,15 @@ namespace SensusPlaylist
                 }
                 return 0;
             });
+        }
+
+        private static ExportMode GetExportMode(CommandOption playlistFileOption)
+        {
+            ExportMode exportMode = ExportMode.PlaylistContents;
+
+            if(playlistFileOption.HasValue()) exportMode |= ExportMode.PlaylistFile;
+
+            return exportMode;
         }
     }
 }

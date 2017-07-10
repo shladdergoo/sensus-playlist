@@ -25,19 +25,8 @@ namespace SensusPlaylist
             _playlistWriter = playlistWriter;
         }
 
-        public void Export(string filename, string outputDirectory,string libraryRoot, 
-            ExportMode exportMode)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Export(string filename, string outputDirectory, string libraryRoot)
-        {
-            Export(filename, outputDirectory, libraryRoot, false);
-        }
-
         public void Export(string filename, string outputDirectory, string libraryRoot,
-            bool exportPlaylistFile)
+            ExportMode exportMode)
         {
             _logger.LogDebug("[Export] Start");
 
@@ -46,21 +35,27 @@ namespace SensusPlaylist
             if (libraryRoot == null) throw new ArgumentNullException(nameof(libraryRoot));
             if (!_fileSystem.FileExists(filename)) throw new FileNotFoundException(filename);
 
-            DoExport(filename, outputDirectory, libraryRoot, exportPlaylistFile);
+            DoExport(filename, outputDirectory, libraryRoot, exportMode);
 
             _logger.LogDebug("[Export] End");
         }
 
         private void DoExport(string filename, string outputDirectory, string libraryRoot,
-            bool exportPlaylistFile)
+            ExportMode exportMode)
         {
             InitializeOutputDirectory(outputDirectory);
 
             Playlist playlist;
             if ((playlist = ProcessPlaylist(filename, outputDirectory, libraryRoot)) != null)
             {
-                if (exportPlaylistFile) ExportPlaylistFile(playlist, outputDirectory);
+                if (HasPlaylistFileFlag(exportMode)) ExportPlaylistFile(playlist, outputDirectory);
             }
+        }
+
+        // TEMPORARY - remove after refactoring complete.
+        private static bool HasPlaylistFileFlag(ExportMode exportMode)
+        {
+            return ((exportMode & ExportMode.PlaylistFile) == ExportMode.PlaylistFile);
         }
 
         private void InitializeOutputDirectory(string outputDirectory)
