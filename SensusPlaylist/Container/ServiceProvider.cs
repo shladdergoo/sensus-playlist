@@ -5,7 +5,7 @@ using System;
 
 namespace SensusPlaylist
 {
-    static class ServiceProvider
+    public static class ServiceProvider
     {
         private static IServiceProvider _serviceProvider;
 
@@ -21,6 +21,19 @@ namespace SensusPlaylist
                 .BuildServiceProvider();
 
             ConfigureLogging();
+        }
+
+        public static IServiceProvider Current
+        {
+            get
+            {
+                if (_serviceProvider == null)
+                {
+                    Build();
+                }
+
+                return _serviceProvider;
+            }
         }
 
         public static T GetService<T>()

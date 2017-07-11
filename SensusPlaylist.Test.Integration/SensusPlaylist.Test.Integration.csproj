@@ -9,6 +9,8 @@
     <PackageReference Include="xunit.runner.visualstudio" Version="2.2.0-beta4-build1194" />
     <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="1.0.3.0" />
     <PackageReference Include="NSubstitute" Version="2.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0-preview1-final" />
+    <PackageReference Include="Microsoft.AspNetCore.NodeServices" Version="1.1.1" />
   </ItemGroup>
 
   <ItemGroup>
