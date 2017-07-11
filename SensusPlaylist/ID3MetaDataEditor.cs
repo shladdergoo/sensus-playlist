@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.NodeServices;
@@ -10,12 +11,15 @@ namespace SensusPlaylist
     {
         private ILogger _logger = ServiceProvider.GetLogger<PlaylistExporter>();
         private INodeServices _nodeServices;
+        private IModuleResolver _moduleResolver;
 
-        public ID3MetaDataEditor(INodeServices nodeServices)
+        public ID3MetaDataEditor(INodeServices nodeServices, IModuleResolver moduleResolver)
         {
-            if (nodeServices == null) throw new ArgumentNullException();
+            if (nodeServices == null) throw new ArgumentNullException(nameof(nodeServices));
+            if (moduleResolver == null) throw new ArgumentNullException(nameof(moduleResolver));
 
             _nodeServices = nodeServices;
+            _moduleResolver = moduleResolver;
         }
 
         public void WriteArtist(string artist)
@@ -24,7 +28,9 @@ namespace SensusPlaylist
 
             try
             {
-                var result = _nodeServices.InvokeAsync<string>("foo.js").Result;
+                string modulePath  = _moduleResolver.Resolve();
+                var result = _nodeServices.InvokeAsync<string>(Path.Combine(modulePath,"foo.js"))
+                    .Result;
             }
             catch (Exception ex)
             {
