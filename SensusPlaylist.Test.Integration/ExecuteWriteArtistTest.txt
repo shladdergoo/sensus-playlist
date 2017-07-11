@@ -1,1 +1,0 @@
-dotnet test .\SensusPlaylist.Test.Integration\SensusPlaylist.Test.Integration.csproj --filter "FullyQualifiedName=SensusPlaylist.Test.Integration.ID3MetaDataEditorTest.WriteArtist_Succeeds"

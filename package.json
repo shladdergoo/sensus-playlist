@@ -19,8 +19,5 @@
   "devDependencies": {
     "gulp": "^3.9.0",
     "gulp-inline-source": "^3.1.0"
-  },
-  "dependencies": {
-    "node-id3": "0.0.9"
   }
 }
