@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.NodeServices;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
+using NSubstitute;
 using Xunit;
 
 namespace SensusPlaylist.Test.Integration
@@ -24,7 +25,9 @@ namespace SensusPlaylist.Test.Integration
         [Fact]
         public void WriteArtist_Succeeds()
         {
-            ID3MetaDataEditor sut = new ID3MetaDataEditor(_nodeServices);
+            IModuleResolver moduleResolver = Substitute.For<IModuleResolver>();
+
+            ID3MetaDataEditor sut = new ID3MetaDataEditor(_nodeServices, moduleResolver);
 
             sut.WriteArtist("foo");
         }
