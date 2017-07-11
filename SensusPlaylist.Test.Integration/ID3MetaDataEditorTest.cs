@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 
 using Microsoft.AspNetCore.NodeServices;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,8 +15,10 @@ namespace SensusPlaylist.Test.Integration
 
         public ID3MetaDataEditorTest()
         {
-            _nodeServices = NodeServicesFactory.CreateNodeServices(
-                new NodeServicesOptions(ServiceProvider.Current));
+            NodeServicesOptions options = new NodeServicesOptions(ServiceProvider.Current);
+            options.ProjectPath = Directory.GetCurrentDirectory();
+
+            _nodeServices = NodeServicesFactory.CreateNodeServices(options);
         }
 
         [Fact]
