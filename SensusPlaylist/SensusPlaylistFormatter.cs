@@ -1,10 +1,14 @@
 using System;
+using System.IO;
 
 namespace SensusPlaylist
 {
     public class SensusPlaylistFormatter : IPlaylistFormatter
     {
-        private IFileSystem _fileSystem;
+        private readonly IFileSystem _fileSystem;
+
+        private readonly char OSDirSep = Path.DirectorySeparatorChar;
+        private readonly char SensusDirSep = '\\';
 
         public SensusPlaylistFormatter(IFileSystem fileSystem)
         {
@@ -19,6 +23,8 @@ namespace SensusPlaylist
             if (libraryRoot == null) throw new ArgumentNullException(nameof(libraryRoot));
 
             string relativeFilename = _fileSystem.GetRelativePath(filename, libraryRoot);
+
+            relativeFilename = relativeFilename.Replace(OSDirSep, SensusDirSep);
 
             return relativeFilename;
         }

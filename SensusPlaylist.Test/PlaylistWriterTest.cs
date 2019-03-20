@@ -11,6 +11,9 @@ namespace SensusPlaylist.Test
     {
         IPlaylistFormatter _formatter;
 
+        private static readonly char OSDirSep = Path.DirectorySeparatorChar;
+        private readonly string SensusNewLine = "\r\n";
+
         public PlaylistWriterTest()
         {
             _formatter = Substitute.For<IPlaylistFormatter>();
@@ -56,6 +59,8 @@ namespace SensusPlaylist.Test
         [Fact]
         public void WriteAll_PlaylistHasFiles_WritesFiles()
         {
+            _formatter.FormatPlaylistFile(Arg.Any<string>(), Arg.Any<string>()).Returns($"somme{OSDirSep}file");
+
             const int FileCount = 3;
 
             Stream output = new MemoryStream();
@@ -68,19 +73,74 @@ namespace SensusPlaylist.Test
             Assert.Equal(FileCount, GetOutputFileCount(output));
         }
 
+        [Fact]
+        public void WriteAll_Writes_UsesSensusLineEndings()
+        {
+            const int FileCount = 2;
+
+            Stream output = new MemoryStream();
+
+            PlaylistWriter sut = new PlaylistWriter(_formatter);
+
+            sut.WriteAll(GetTestPlaylist(FileCount), output);
+
+            string outputString = GetOutput(output);
+            string[] lines = outputString.Split(SensusNewLine);
+
+            Assert.NotEqual(0, lines.Length);
+        }
+
+        [Fact]
+        public void WriteAll_Writes_EndsWithNewLine()
+        {
+            _formatter.FormatPlaylistFile(Arg.Any<string>(), Arg.Any<string>()).Returns($"somme{OSDirSep}file");
+
+            const int FileCount = 3;
+
+            Stream output = new MemoryStream();
+
+            PlaylistWriter sut = new PlaylistWriter(_formatter);
+
+            sut.WriteAll(GetTestPlaylist(FileCount), output);
+
+            Assert.Equal(FileCount + 1, GetOutputLineCount(output));
+            output.Position = 0;
+            Assert.EndsWith(string.Empty, GetOutput(output));
+        }
+
         private static Playlist GetTestPlaylist(int fileCount)
         {
             List<string> playlistFiles = new List<string>();
 
             for (int i = 0; i < fileCount; i++)
             {
-                playlistFiles.Add($"C:\\someLibrary\\someFolder\\someFile{i}.m4a");
+                playlistFiles.Add($"{OSDirSep}someLibrary{OSDirSep}someFolder{OSDirSep}someFile{i}.m4a");
             }
 
             return new Playlist("somePlaylist", "someLibraryRoot", playlistFiles);
         }
 
-        private static int GetOutputFileCount(Stream output)
+        private int GetOutputFileCount(Stream output)
+        {
+            int count = 0;
+
+            StreamReader reader = new StreamReader(output);
+
+            string line;
+            do
+            {
+                line = reader.ReadLine();
+
+                if (line != null && line != string.Empty && !line.Equals(SensusNewLine))
+                {
+                    count++;
+                }
+            } while (line != null);
+
+            return count;
+        }
+
+        private int GetOutputLineCount(Stream output)
         {
             int count = 0;
 
@@ -92,6 +152,13 @@ namespace SensusPlaylist.Test
             }
 
             return count;
+        }
+
+        private static string GetOutput(Stream output)
+        {
+            StreamReader reader = new StreamReader(output);
+
+            return reader.ReadToEnd();
         }
     }
 }

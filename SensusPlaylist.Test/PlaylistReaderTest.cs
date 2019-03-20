@@ -8,6 +8,8 @@ namespace SensusPlaylist.Test
 {
     public class PlaylistReaderTest
     {
+        private readonly char OSDirSep = Path.DirectorySeparatorChar;
+
         [Fact]
         public void ReadAll_PlaylistNull_ThrowsException()
         {
@@ -71,9 +73,9 @@ namespace SensusPlaylist.Test
         {
             string playlistString = "#EXTM3U" + "\r\n" +
                     "#EXTINF:255,Simple Song - The Shins" + "\r\n" +
-                    "D:\\shlad\\Music\\iTunes\\Music\\The Shins\\Port Of Morrow\\02 Simple Song.m4a" + "\r\n" +
+                    $"{OSDirSep}shlad{OSDirSep}Music{OSDirSep}iTunes{OSDirSep}Music{OSDirSep}The Shins{OSDirSep}Port Of Morrow{OSDirSep}02 Simple Song.m4a" + "\r\n" +
                     "#EXTINF:286,Roscoe - Midlake" + "\r\n" +
-                    "D:\\shlad\\Music\\iTunes\\Music\\Midlake\\The Trials Of Van Occupanther\01 Roscoe.m4a";
+                    $"{OSDirSep}shlad{OSDirSep}Music{OSDirSep}iTunes{OSDirSep}Music{OSDirSep}Midlake{OSDirSep}The Trials Of Van Occupanther{OSDirSep}01 Roscoe.m4a";
 
             Stream playlistStream = new MemoryStream();
             StreamWriter writer = new StreamWriter(playlistStream);
@@ -87,8 +89,8 @@ namespace SensusPlaylist.Test
         private Stream GetTestPlaylistStreamOnlyFiles()
         {
             string playlistString =
-                    "D:\\shlad\\Music\\iTunes\\Music\\The Shins\\Port Of Morrow\\02 Simple Song.m4a" + "\r\n" +
-                    "D:\\shlad\\Music\\iTunes\\Music\\Midlake\\The Trials Of Van Occupanther\01 Roscoe.m4a";
+                    $"{OSDirSep}shlad{OSDirSep}Music{OSDirSep}iTunes{OSDirSep}Music{OSDirSep}The Shins{OSDirSep}Port Of Morrow{OSDirSep}02 Simple Song.m4a" + "\r\n" +
+                    $"{OSDirSep}shlad{OSDirSep}Music{OSDirSep}iTunes{OSDirSep}Music{OSDirSep}Midlake{OSDirSep}The Trials Of Van Occupanther{OSDirSep}01 Roscoe.m4a";
 
             Stream playlistStream = new MemoryStream();
             StreamWriter writer = new StreamWriter(playlistStream);
